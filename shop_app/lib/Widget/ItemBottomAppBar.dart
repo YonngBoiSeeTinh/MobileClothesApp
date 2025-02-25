@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ItemBottomNavBar extends StatelessWidget {
-  const ItemBottomNavBar({super.key});
-
+class ItemBottomNavBar extends StatefulWidget {
+   Map<String, dynamic>? product;
+  ItemBottomNavBar({required this.product});
+  @override
+  _ItemBottomNavBarState createState() => _ItemBottomNavBarState();
+}
+  
+class _ItemBottomNavBarState extends State<ItemBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return  Positioned(
@@ -26,7 +31,7 @@ class ItemBottomNavBar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$250",
+                        '${widget.product?['price']} VND',
                         style: TextStyle(
                           color: Color(0xFF4C53A5),
                           fontSize: 25,

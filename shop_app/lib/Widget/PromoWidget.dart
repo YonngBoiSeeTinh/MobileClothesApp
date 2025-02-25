@@ -1,9 +1,37 @@
 
 import 'package:flutter/material.dart';
-
-class Promowidget extends StatelessWidget {
+import 'package:shop_app/Page/ProductDetail.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/AppConfig.dart';
+import 'dart:convert';
+class Promowidget extends StatefulWidget {
   const Promowidget({super.key});
+  _PromowidgetState createState() => _PromowidgetState();  
+}
+class _PromowidgetState extends State<Promowidget> {
+ Map<String,dynamic>? product;
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
 
+   Future<void> fetchProducts() async {
+    try {
+      final response =
+          await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Products/3'));
+       
+      if (response.statusCode == 200) {
+        setState(() {
+          product = jsonDecode(response.body);
+        });
+      } else {
+        print('Failed to load products: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching products: $e');
+    }
+  }
   @override 
   Widget build(BuildContext context) {
    return Container(
@@ -27,7 +55,10 @@ class Promowidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                  color: Colors.white,
               ),
-              child: Image.asset("image/1.png",width: 250),
+              child:Image.memory(
+               base64Decode(product?['image']),
+                width: 250,
+              ),
             ),
             // Chữ nổi
             Positioned(
@@ -68,7 +99,14 @@ class Promowidget extends StatelessWidget {
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailPage(product: product,), // Truyền id vào ProductUpdatePage
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       
                       backgroundColor:  Color.fromARGB(255, 255, 255, 255),

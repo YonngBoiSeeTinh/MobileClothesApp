@@ -5,20 +5,36 @@ import 'dart:convert';
 
 import 'package:shop_app/Page/ProductDetail.dart';
 
-class ItemWidget extends StatefulWidget {
+class SearchItemWidget extends StatefulWidget {
+  final  String? filter;
+  SearchItemWidget({required this.filter});
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget> {
+class _ItemWidgetState extends State<SearchItemWidget> {
   List<dynamic> products = [];
-
+  List<dynamic> filteredProducts = [];
   @override
   void initState() {
     super.initState();
     fetchProducts();
   }
-
+  @override
+  void didUpdateWidget(SearchItemWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.filter != widget.filter) {
+      filterProducts();
+    }
+  }
+  void filterProducts() {
+    setState(() {
+      filteredProducts = products.where((item) {
+        final name = item['name']?.toString().toLowerCase() ?? '';
+        return name.contains(widget.filter?.toLowerCase() ?? '');
+      }).toList();
+    });
+  }
   Future<void> fetchProducts() async {
     try {
       final response =
@@ -27,6 +43,7 @@ class _ItemWidgetState extends State<ItemWidget> {
       if (response.statusCode == 200) {
         setState(() {
           products = jsonDecode(response.body);
+          filterProducts();
         });
       } else {
         print('Failed to load products: ${response.statusCode}');
@@ -38,7 +55,7 @@ class _ItemWidgetState extends State<ItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return  products.isEmpty
+    return  filteredProducts.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
                 padding: const EdgeInsets.all(10),
@@ -48,9 +65,9 @@ class _ItemWidgetState extends State<ItemWidget> {
                   mainAxisSpacing: 10,
                   childAspectRatio: 0.7,
                 ),
-                itemCount: products.length,
+                itemCount: filteredProducts.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = filteredProducts[index];
                   return ProductCard(product: product);
                 },
           );

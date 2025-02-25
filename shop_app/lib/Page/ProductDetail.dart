@@ -1,16 +1,24 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shop_app/AppConfig.dart';
 import 'package:shop_app/Widget/ItemAppBarWidget.dart';
 import 'package:shop_app/Widget/ItemBottomAppBar.dart';
 
 class ProductDetailPage extends StatefulWidget {
+  Map<String, dynamic>? product;
+  ProductDetailPage({required this.product});
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+
+  
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +30,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           _buildProductDetails(),
         ],
       ),
-      bottomNavigationBar: ItemBottomNavBar(),
+      bottomNavigationBar: ItemBottomNavBar(product: widget.product,),
     );
   }
 
@@ -35,8 +43,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(16),
-          child: Image.asset(
-            "image/1.png",
+          child: Image.memory(
+            base64Decode(widget.product?['image']),
             height: 350,
           ),
         ),
@@ -51,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Text(
-            "Product name",
+            widget.product?['name'],
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -74,37 +82,37 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          RatingBar.builder(
-            initialRating: 3,
-            minRating: 1,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => Icon(
-              Icons.favorite,
-              color: Color(0xFF4C53A5),
-              size: 12,
-            ),
-            onRatingUpdate: (rating) {},
-          ),
-          Row(
-            children: [
-              _buildQuantityButton(CupertinoIcons.plus),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  "01",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                children: [
+                    for(int i = 0; i < 5;i++)
+                  Icon(  Icons.favorite,
                     color: Color(0xFF4C53A5),
+                    size: 30,),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: Row(
+              children: [
+                _buildQuantityButton(CupertinoIcons.plus),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "01",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF4C53A5),
+                    ),
                   ),
                 ),
-              ),
-              _buildQuantityButton(CupertinoIcons.minus),
-            ],
-          ),
+                _buildQuantityButton(CupertinoIcons.minus),
+              ],
+                        ),
+            ),
         ],
       ),
     );
@@ -130,7 +138,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
   }
-
   Widget _buildColorSizeOptions() {
     return Padding(
       padding: const EdgeInsets.only(left: 20),
@@ -233,7 +240,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
         TextSpan(
           text:
-              "description about product description about product description about ",
+              widget.product?['description'],
           style: TextStyle(
             fontSize: 19,
             fontWeight: FontWeight.normal,
