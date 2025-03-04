@@ -5,7 +5,7 @@ class OrderDetail extends StatefulWidget {
   final List<dynamic> orderDetails; 
   final List<dynamic> products;
   final int orderId;
-  const OrderDetail({
+  const OrderDetail({super.key, 
    
     required this.orderDetails,
     required this.orders,
@@ -46,7 +46,7 @@ class _OrderDetailState extends State<OrderDetail> {
     }
 
         return 
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
             child: SingleChildScrollView(
               child: Column(

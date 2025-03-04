@@ -1,11 +1,11 @@
 ﻿-- Thêm dữ liệu vào bảng Categories
 INSERT INTO Categories (name, description) VALUES
-(N'Shirt', N'Các dòng iPhone mới nhất của Apple'),
-(N'Shoes', N'Các dòng MacBook Air và MacBook Pro'),
-(N'Jeans', N'Các dòng iPad từ Mini đến Pro'),
-(N'Short', N'Tai nghe không dây cao cấp của Apple'),
-(N'T Shirt', N'Apple Watch các phiên bản'),
-(N'Pant', N'Các phụ kiện hỗ trợ Apple devices');
+(N'Shirt', N'Shirt'),
+(N'Shoes', N'Shoes'),
+(N'Jeans', N'Jeans'),
+(N'Short', N'Short'),
+(N'T Shirt', N'Shirt'),
+(N'Pant', N'Pant');
 
 
 -- Thêm dữ liệu vào bảng Users
@@ -43,15 +43,15 @@ INSERT INTO Products (name, description, price, promo, unit, brand, category_id)
 (N'Áo Sơ Mi', N'Áo sơ mi trắng công sở', 200000, 5, N'Cái', N'H&M', 1);
 
 -- Thêm dữ liệu vào bảng ColorSize
-INSERT INTO ColorSize (product_id, color, size, quantity, code) VALUES
-(1, N'Trắng', N'M', 50, N'TS-WH-M'),
-(1, N'Trắng', N'L', 40, N'TS-WH-L'),
-(2, N'Xanh', N'32', 30, N'JE-BL-32'),
-(2, N'Xanh', N'34', 25, N'JE-BL-34'),
-(3, N'Đen', N'41', 20, N'SH-BL-41'),
-(3, N'Đen', N'42', 15, N'SH-BL-42'),
-(4, N'Tráng', N'M', 60, N'SM-WH-M'),
-(4, N'Tráng', N'L', 50, N'SM-WH-L');
+INSERT INTO ColorSizes (product_id, color, size, quantity, code) VALUES
+(1, N'Trắng', N'M', 50, N'#000000'),
+(1, N'Trắng', N'L', 40, N'#000000'),
+(2, N'Xanh', N'32', 30,N'#000000'),
+(2, N'Xanh', N'34', 25,N'#000000'),
+(3, N'Đen', N'41', 20, N'#000000'),
+(3, N'Đen', N'42', 15,N'#000000'),
+(4, N'Tráng', N'M', 60,N'#000000'),
+(4, N'Tráng', N'L', 50,N'#000000');
 
 -- Thêm dữ liệu vào bảng Orders
 INSERT INTO Orders (user_id, total_price, status, name, phone, address) VALUES
@@ -73,7 +73,9 @@ INSERT INTO Cart (product_id, quantity, user_id, color_size_id, price) VALUES
 (3, 1, 1, 5, 500000);
 
 -- Thêm dữ liệu vào bảng Promotion
-INSERT INTO Promotion (name, value, end_at) VALUES
-(N'Khuyến mãi Tết', 100000, '2025-02-01'),
-(N'Giảm giá cuối năm', 150000, '2025-12-31'),
-(N'Giảm giá đặc biệt', 200000, '2025-05-15');
+INSERT INTO Promotion (name, value, end_at, code) VALUES
+(N'Khuyến mãi Tết', 100000, '2025-02-01', 'TETVOUCHER'),
+(N'Giảm giá cuối năm', 150000, '2025-12-31','ENDYEAR'),
+(N'Giảm giá đặc biệt', 200000, '2025-05-15','SPECIAL');
+GO
+ update Promotion set minPrice = 2000000

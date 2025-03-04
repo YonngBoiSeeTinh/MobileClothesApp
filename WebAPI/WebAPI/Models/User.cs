@@ -13,6 +13,8 @@ public partial class User : BaseEntity, IHasImage
 
     public string? Address { get; set; }
 
+   
+
     public int? Role { get; set; }
 
     public byte[]? Image { get; set; }

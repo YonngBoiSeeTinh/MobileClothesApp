@@ -1,14 +1,9 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/AppConfig.dart';
-import 'package:shop_app/Page/CartPage.dart';
-import 'package:shop_app/Page/welcomePage.dart';
 import 'package:shop_app/Widget/CategoryWidget.dart';
 import 'package:shop_app/Widget/ItemWidget.dart';
 import 'package:shop_app/Widget/HomeAppBar.dart';
 import 'package:shop_app/Widget/PromoWidget.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 
 import 'package:shop_app/Widget/SearchItemWidget.dart';
 class ProductHomepage extends StatefulWidget {
@@ -85,7 +80,7 @@ class _ProductHomepageState extends State<ProductHomepage> {
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 1200,
                   child: (searchFilter == null || searchFilter!.isEmpty)
                           ? ItemWidget()

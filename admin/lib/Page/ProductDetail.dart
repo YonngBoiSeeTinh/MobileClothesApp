@@ -1,7 +1,5 @@
 import 'package:clippy_flutter/arc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shop_app/Widget/ItemAppBarWidget.dart';
 import 'package:shop_app/Widget/ItemBottomAppBar.dart';
 
@@ -9,7 +7,8 @@ class ProductDetailPage extends StatefulWidget {
   @override
   final int id;
 
-  ProductDetailPage({required this.id});
+  const ProductDetailPage({super.key, required this.id});
+  @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
 

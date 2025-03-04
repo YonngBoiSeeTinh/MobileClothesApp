@@ -3,25 +3,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Services
 {
-    public class DetailService
+    public class CommentService
     {
         private readonly CSDLBanHang _context;
 
-        public DetailService(CSDLBanHang context)
+        public CommentService(CSDLBanHang context)
         {
             _context = context;
         }
 
        
-        public async Task<List<Detail>> GetByProductAsync(int productId)
+        public async Task<List<Comment>> GetByProductAsync(int productId)
         {
             // Lấy danh sách ColorSize theo ProductId
-            var Detail = await _context.Details
+            var Comment = await _context.Comments
                                            .Where(cs => cs.ProductId == productId)
                                            .ToListAsync();
 
          
-            return Detail ?? new List<Detail>();
+            return Comment ?? new List<Comment>();
         }
 
     }

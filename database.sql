@@ -34,15 +34,16 @@ CREATE TABLE Products (
 );
 GO
 
+-- Bảng Colors
 
--- Bảng ColorSizes
-CREATE TABLE ColorSize (
-	id INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE ColorSizes (
+    id INT PRIMARY KEY IDENTITY(1,1),
     product_id INT NOT NULL,
     color NVARCHAR(50) NOT NULL,
     size NVARCHAR(10) NOT NULL,
+	code NVARCHAR(10) NOT NULL,
     quantity INT NOT NULL,
-	code NVARCHAR(50) ,
+	price DECIMAL(18, 2) ,
     FOREIGN KEY (product_id) REFERENCES Products(id),
 	created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE()
@@ -104,11 +105,11 @@ GO
 CREATE TABLE OrderDetails (
     id INT PRIMARY KEY IDENTITY(1,1),
     order_id INT NOT NULL,
-    color_size_id INT NOT NULL,
+    color NVARCHAR(20) NULL,
+	size NVARCHAR(20) NULL,
     quantity INT NOT NULL,
     price DECIMAL(18, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES Orders(id),
-    FOREIGN KEY (color_size_id) REFERENCES ColorSize(id),
 	productId INT,
 	created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE()
@@ -120,7 +121,8 @@ CREATE TABLE Cart (
     product_id INT NOT NULL,
     quantity INT NOT NULL,
     user_id INT ,
-	color_size_id INT,
+	color NVARCHAR(20) NULL,
+	size NVARCHAR(20) NULL,
     price DECIMAL(18, 2) NOT NULL,
     FOREIGN KEY (product_id) REFERENCES Products(id),
     FOREIGN KEY (user_id) REFERENCES Users(id),

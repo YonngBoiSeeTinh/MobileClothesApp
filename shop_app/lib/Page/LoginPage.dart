@@ -4,7 +4,7 @@ import 'package:shop_app/Page/SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
 
-  LoginPage({Key? key, this.title}) : super(key: key);
+  const LoginPage({super.key, this.title});
   final String? title;
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key? key, this.title}) : super(key: key);
+  const WelcomePage({super.key, this.title});
 
   final String? title;
 

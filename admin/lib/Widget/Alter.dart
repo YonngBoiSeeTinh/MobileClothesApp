@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Alter extends StatelessWidget {
   final String message;
 
-  Alter({required this.message});
+  const Alter({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

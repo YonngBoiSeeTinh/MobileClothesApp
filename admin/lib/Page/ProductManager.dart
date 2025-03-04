@@ -6,6 +6,8 @@ import 'package:shop_app/Page/EditProduct.dart';
 import 'package:shop_app/Widget/Alter.dart';
 import '../AppConfig.dart';
 class ProductManager extends StatefulWidget {
+  const ProductManager({super.key});
+
   @override
   _ProductManagerState createState() => _ProductManagerState();
 }
@@ -51,7 +53,7 @@ class _ProductManagerState extends State<ProductManager> {
 
    Future<void> deleteProduct(int id) async {
     try {
-      final response = await http.delete(Uri.parse('${ApiConfig.baseUrl}/api/Products/${id}')); 
+      final response = await http.delete(Uri.parse('${ApiConfig.baseUrl}/api/Products/$id')); 
       if (response.statusCode == 204) {
         showDialog(
         context: context,
@@ -84,7 +86,7 @@ class _ProductManagerState extends State<ProductManager> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          content: Container(
+          content: SizedBox(
              width: MediaQuery.of(context).size.width * 0.7, 
             child: SingleChildScrollView(
               child: Column(
@@ -101,7 +103,7 @@ class _ProductManagerState extends State<ProductManager> {
                   ),
                   SizedBox(height: 8),
                   // Image
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Padding(
                       padding: EdgeInsets.all(16),
@@ -209,7 +211,34 @@ class _ProductManagerState extends State<ProductManager> {
       },
     );
   }
+  
+  Widget displayImage(String? base64Image) {
+    if (base64Image == null || base64Image.isEmpty) {
+      return Container(
+        width: 80,
+        height: 80,
+        color: Colors.grey[200],
+        child: Icon(Icons.image, color: Colors.grey),
+      );
+    }
 
+    try {
+      final decodedBytes = base64Decode(base64Image);
+      return Image.memory(
+        decodedBytes,
+        width: 80,
+        height: 80,
+        fit: BoxFit.cover,
+      );
+    } catch (e) {
+      return Container(
+        width: 80,
+        height: 80,
+        color: Colors.red[200],
+        child: Icon(Icons.broken_image, color: Colors.red),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -246,12 +275,7 @@ class _ProductManagerState extends State<ProductManager> {
                     children: [
                       // Hiển thị ảnh từ Base64
                       base64Image != null
-                          ? Image.memory(
-                              base64Decode(base64Image),
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            )
+                          ? displayImage(base64Image)
                           : Container(
                               width: 80,
                               height: 80,
@@ -330,8 +354,8 @@ class _ProductManagerState extends State<ProductManager> {
             builder: (context) => (AddProductPage()), // Truyền id vào ProductUpdatePage
           ),);
         },
-        child: Icon(Icons.add, color: Colors.white),
         backgroundColor: Color(0xFF4C53A5),
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }

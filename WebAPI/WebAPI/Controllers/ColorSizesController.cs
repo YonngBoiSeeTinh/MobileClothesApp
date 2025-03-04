@@ -58,9 +58,14 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutColorSize(int id, ColorSize colorSize)
         {
-           
+            if (id != colorSize.Id)
+            {
+                return BadRequest(new { message = "ID không khớp" });
+            }
+
             try
-            {   colorSize.Id = id;
+            {
+                colorSize.Id = id;
                 await _colorSizeRepository.UpdateAsync(colorSize);
                 return NoContent();
             }

@@ -6,6 +6,8 @@ import 'dart:convert';
 import 'package:shop_app/Page/ProductDetail.dart';
 
 class ItemWidget extends StatefulWidget {
+  const ItemWidget({super.key});
+
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
 }
@@ -61,7 +63,7 @@ class _ItemWidgetState extends State<ItemWidget> {
 class ProductCard extends StatelessWidget {
   final dynamic product;
 
-  const ProductCard({Key? key, required this.product}) : super(key: key);
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

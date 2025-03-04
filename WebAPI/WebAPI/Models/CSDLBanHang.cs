@@ -23,7 +23,7 @@ public partial class CSDLBanHang : DbContext
 
     public virtual DbSet<ColorSize> ColorSizes { get; set; }
 
-    public virtual DbSet<Detail> Details { get; set; }
+   
 
     public virtual DbSet<Order> Orders { get; set; }
 
@@ -31,6 +31,7 @@ public partial class CSDLBanHang : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Comment> Comments { get; set; }
     public virtual DbSet<Promotion> Promotions { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -114,13 +115,18 @@ public partial class CSDLBanHang : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__ColorSiz__3213E83F14C0276A");
 
-            entity.ToTable("ColorSize");
+            entity.ToTable("ColorSizes");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Color)
                 .HasMaxLength(50)
                 .HasColumnName("color");
-          
+            entity.Property(e => e.Code)
+                .HasMaxLength(50)
+                .HasColumnName("code");
+            entity.Property(e => e.Price)
+              .HasColumnType("decimal(18, 2)")
+              .HasColumnName("price");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -138,42 +144,7 @@ public partial class CSDLBanHang : DbContext
              
         });
 
-        modelBuilder.Entity<Detail>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Details__3213E83F6A7C112F");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Battery).HasMaxLength(50);
-            entity.Property(e => e.ChargingTechnology).HasMaxLength(50);
-            entity.Property(e => e.Chipset).HasMaxLength(100);
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("created_at");
-            entity.Property(e => e.FrontCamera).HasMaxLength(100);
-            entity.Property(e => e.Gpu)
-                .HasMaxLength(100)
-                .HasColumnName("GPU");
-            entity.Property(e => e.InternalStorage).HasMaxLength(50);
-            entity.Property(e => e.Nfc).HasColumnName("NFC");
-            entity.Property(e => e.Ram)
-                .HasMaxLength(50)
-                .HasColumnName("RAM");
-            entity.Property(e => e.RearCamera).HasMaxLength(100);
-            entity.Property(e => e.ScreenResolution).HasMaxLength(100);
-            entity.Property(e => e.ScreenSize).HasMaxLength(50);
-            entity.Property(e => e.ScreenTechnology).HasMaxLength(100);
-            entity.Property(e => e.Simcard)
-                .HasMaxLength(50)
-                .HasColumnName("SIMCard");
-            entity.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-
-           
-        });
-
+     
         modelBuilder.Entity<Order>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Orders__3213E83FB707A7B4");
@@ -189,11 +160,11 @@ public partial class CSDLBanHang : DbContext
               .HasMaxLength(70)
               .HasColumnName("paymentMethod");
             entity.Property(e => e.PaymentStatus)
-            .HasMaxLength(70)
-            .HasColumnName("paymentStatus");
+                .HasMaxLength(70)
+                .HasColumnName("paymentStatus");
             entity.Property(e => e.CancellationReason)
-              .HasMaxLength(255)
-              .HasColumnName("cancellationReason");
+                .HasMaxLength(255)
+                .HasColumnName("cancellationReason");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -267,6 +238,8 @@ public partial class CSDLBanHang : DbContext
             entity.Property(e => e.Rate)
                 .HasDefaultValue(0)
                 .HasColumnName("rate");
+            entity.Property(e => e.StartRate)
+              .HasColumnName("start_rate");
             entity.Property(e => e.Sold)
                 .HasDefaultValue(0)
                 .HasColumnName("sold");
@@ -280,6 +253,30 @@ public partial class CSDLBanHang : DbContext
 
            
         });
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Comment__3213E83F5350BA77");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Start)
+                .HasColumnName("start");
+            entity.Property(e => e.UserId).HasColumnName("userID");
+
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.CreatedAt)
+             .HasDefaultValueSql("(getdate())")
+             .HasColumnType("datetime")
+             .HasColumnName("created_at");
+
+
+        });
+
+
 
         modelBuilder.Entity<Promotion>(entity =>
         {
@@ -298,6 +295,9 @@ public partial class CSDLBanHang : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.Code)
+             .HasMaxLength(10)
+             .HasColumnName("code");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -305,6 +305,8 @@ public partial class CSDLBanHang : DbContext
             entity.Property(e => e.Value)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("value");
+            entity.Property(e => e.MinPrice)
+             .HasColumnName("minPrice");
         });
 
         modelBuilder.Entity<Role>(entity =>

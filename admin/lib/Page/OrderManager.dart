@@ -6,6 +6,8 @@ import 'package:shop_app/Widget/OrderDetailWidget.dart';
 import 'package:shop_app/Page/EditOrder.dart';
 
 class OrderManager extends StatefulWidget {
+  const OrderManager({super.key});
+
   @override
   _OrderManagerState createState() => _OrderManagerState();
 }

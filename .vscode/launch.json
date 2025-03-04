@@ -5,6 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "admin",
+            "cwd": "admin",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin (profile mode)",
+            "cwd": "admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "admin (release mode)",
+            "cwd": "admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
             "name": "shop_app",
             "cwd": "shop_app",
             "request": "launch",

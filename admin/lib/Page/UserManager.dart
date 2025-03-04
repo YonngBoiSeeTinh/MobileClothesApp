@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:shop_app/AppConfig.dart';
 
 class UserManager extends StatefulWidget {
+  const UserManager({super.key});
+
   @override
   _UserManagerState createState() => _UserManagerState();
 }
@@ -112,7 +114,7 @@ class _UserManagerState extends State<UserManager> {
                       decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50)
                             ),
-                      child: user['image'] != null
+                      child: user?['image'] != null
                             ? Image.memory(
                                 base64Decode(user['image']),
                                 height: 40,

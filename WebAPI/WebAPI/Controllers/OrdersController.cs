@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Factory;
 using WebAPI.Models;
@@ -20,6 +18,7 @@ namespace WebAPI.Controllers
         {
             _OrderRepository = RepositoryFactory.CreateRepository<Order>(context);
             _OrderService = new OrderService(context);
+
         }
 
         // GET: api/Orders
@@ -43,7 +42,7 @@ namespace WebAPI.Controllers
                 return NotFound(new { message = ex.Message });
             }
         }
-        // GET: api/User/CheckUser/1
+        // GET: api/Users/CheckUser/1
         [HttpGet("User/{id}")]
         public async Task<ActionResult<List<Order>>> GetByUser(int id)
         {
@@ -101,7 +100,7 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {
-           
+
             try
             {
                 await _OrderService.DeleteDependencieAsync(id);

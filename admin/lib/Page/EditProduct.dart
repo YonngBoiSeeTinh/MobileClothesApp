@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/AppConfig.dart';
@@ -10,7 +9,7 @@ import 'package:shop_app/Widget/Alter.dart';
 class ProductUpdatePage extends StatefulWidget {
   final int id;
  
-  ProductUpdatePage({required this.id});
+  const ProductUpdatePage({super.key, required this.id});
 
   @override
   _ProductUpdatePageState createState() => _ProductUpdatePageState();
@@ -90,7 +89,7 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
   if (imageFile != null) {
     var multipartFile = await http.MultipartFile.fromPath(
       'image',
-      imageFile!.path,
+      imageFile.path,
     );
     request.files.add(multipartFile);
   }
@@ -234,10 +233,6 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _pickImage,
-                  child: Text(
-                    "Thêm Ảnh",
-                    style: TextStyle(color: Color(0xFF4C53A5), fontSize: 20),
-                  ),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     backgroundColor: Colors.white,
@@ -250,6 +245,10 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
                     ),
                     shadowColor: Colors.black,
                     elevation: 6,
+                  ),
+                  child: Text(
+                    "Thêm Ảnh",
+                    style: TextStyle(color: Color(0xFF4C53A5), fontSize: 20),
                   ),
                 ),
               ],

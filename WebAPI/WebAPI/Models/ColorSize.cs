@@ -12,9 +12,11 @@ public partial class ColorSize : BaseEntity
     public string Color { get; set; } = null!;
 
     public string Size { get; set; } = null!;
+    public string Code { get; set; } = null!;
 
     public int Quantity { get; set; }
 
+    public decimal Price { get; set; }
 
    
 }

@@ -6,6 +6,7 @@ import 'package:shop_app/AppConfig.dart';
 import 'dart:convert';
 class Promowidget extends StatefulWidget {
   const Promowidget({super.key});
+  @override
   _PromowidgetState createState() => _PromowidgetState();  
 }
 class _PromowidgetState extends State<Promowidget> {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/Page/LoginPage.dart';
-import 'package:shop_app/Page/SignUpPage.dart';
 
 class SignupPage extends StatefulWidget {
 
-  SignupPage({Key? key, this.title}) : super(key: key);
+  const SignupPage({super.key, this.title});
   final String? title;
 
   @override

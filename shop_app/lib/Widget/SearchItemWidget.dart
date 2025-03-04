@@ -7,7 +7,7 @@ import 'package:shop_app/Page/ProductDetail.dart';
 
 class SearchItemWidget extends StatefulWidget {
   final  String? filter;
-  SearchItemWidget({required this.filter});
+  const SearchItemWidget({super.key, required this.filter});
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
 }
@@ -78,7 +78,7 @@ class _ItemWidgetState extends State<SearchItemWidget> {
 class ProductCard extends StatelessWidget {
   final dynamic product;
 
-  const ProductCard({Key? key, required this.product}) : super(key: key);
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ItemBottomNavBar extends StatefulWidget {
    Map<String, dynamic>? product;
-  ItemBottomNavBar({required this.product});
+  ItemBottomNavBar({super.key, required this.product});
   @override
   _ItemBottomNavBarState createState() => _ItemBottomNavBarState();
 }

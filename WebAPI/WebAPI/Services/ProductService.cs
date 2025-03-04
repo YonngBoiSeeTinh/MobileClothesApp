@@ -19,7 +19,7 @@ namespace WebAPI.Services
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null) return;
-          
+
 
             var colorSizeIds = await _context.ColorSizes
                 .Where(cs => cs.ProductId == productId)
@@ -30,17 +30,7 @@ namespace WebAPI.Services
             {
                 await Task.WhenAll(colorSizeIds.Select(colorSizeId => _colorSizesService.DeleteDependencieAsync(colorSizeId)));
             }
-            var detailID = await _context.ColorSizes
-                 .Where(cs => cs.ProductId == productId)
-                 .Select(cs => cs.Id)
-                 .ToListAsync();
-            if (detailID.Any())
-            {
-                await _context.Details
-                .Where(dt => dt.ProductId == productId)
-                .ExecuteDeleteAsync();
-
-            }  
+          
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }

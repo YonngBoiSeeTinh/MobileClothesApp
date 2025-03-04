@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class ClipPainter extends CustomClipper<Path>{
   @override
@@ -8,7 +7,7 @@ class ClipPainter extends CustomClipper<Path>{
    Path getClip(Size size) {
       var height = size.height;
     var width = size.width;
-    var path = new Path();
+    var path = Path();
 
     path.lineTo(0, size.height );
     path.lineTo(size.width , height);

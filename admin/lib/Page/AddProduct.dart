@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/AppConfig.dart';
@@ -8,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shop_app/Page/HomePage.dart';
 import 'package:shop_app/Widget/Alter.dart';
 class AddProductPage extends StatefulWidget {
+  const AddProductPage({super.key});
+
   @override
   _AddProductPageState createState() => _AddProductPageState();
 }
@@ -201,10 +202,6 @@ class _AddProductPageState extends State<AddProductPage> {
                 SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _pickImage,
-                  child: Text(
-                    "Thêm Ảnh",
-                    style: TextStyle(color: Color(0xFF4C53A5), fontSize: 20),
-                  ),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     backgroundColor: Colors.white,
@@ -217,6 +214,10 @@ class _AddProductPageState extends State<AddProductPage> {
                     ),
                     shadowColor: Colors.black,
                     elevation: 6,
+                  ),
+                  child: Text(
+                    "Thêm Ảnh",
+                    style: TextStyle(color: Color(0xFF4C53A5), fontSize: 20),
                   ),
                 ),
               ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AccountWidget extends StatefulWidget {
+  const AccountWidget({super.key});
+
 
   @override
   _AccountWidgetState createState() => _AccountWidgetState();

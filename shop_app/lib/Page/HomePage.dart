@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/Page/CartPage.dart';
 import 'package:shop_app/Page/LoginPage.dart';
 import 'package:shop_app/Page/ProductHomePage.dart';
-import 'package:shop_app/Page/welcomePage.dart';
-import 'package:shop_app/Widget/CategoryWidget.dart';
-import 'package:shop_app/Widget/ItemWidget.dart';
-import 'package:shop_app/Widget/HomeAppBar.dart';
-import 'package:shop_app/Widget/PromoWidget.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -23,7 +18,8 @@ class _HomepageState extends State<Homepage> {
 
   final List<Widget> _pages = [
     // Trang Home
-    ProductHomepage(),  // Trang Shopping Bag
+    ProductHomepage(),  
+    // Trang Shopping Bag
     Center(
       child: Cartpage()
     ),

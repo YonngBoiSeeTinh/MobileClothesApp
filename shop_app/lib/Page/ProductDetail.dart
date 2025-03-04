@@ -1,16 +1,13 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:shop_app/AppConfig.dart';
 import 'package:shop_app/Widget/ItemAppBarWidget.dart';
 import 'package:shop_app/Widget/ItemBottomAppBar.dart';
 
 class ProductDetailPage extends StatefulWidget {
   Map<String, dynamic>? product;
-  ProductDetailPage({required this.product});
+  ProductDetailPage({super.key, required this.product});
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
 }
