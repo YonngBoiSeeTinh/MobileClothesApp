@@ -26,29 +26,40 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
   List<dynamic> categories = []; 
   Map<String, dynamic>? product;
   File? imageFile;
-
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
-    fetchProduct(); // Gọi API khi trang được mở
+    fetchProduct(); 
     fetchCategories();
   }
   Future<void> fetchCategories() async {
-  try {
-    final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Categories'));
-    if (response.statusCode == 200) {
-      setState(() {
-        categories = jsonDecode(response.body);
-      });
-    } else {
-      print('Failed to load categories: ${response.statusCode}');
+    setState(() {
+      isLoading = true; // Bắt đầu tải dữ liệu
+    });
+    try {
+      final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Categories'));
+      if (response.statusCode == 200) {
+        setState(() {
+          categories = jsonDecode(response.body);
+        });
+      } else {
+        print('Failed to load categories: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
     }
-  } catch (e) {
-    print('Error fetching categories: $e');
-  }
+    finally {
+      setState(() {
+        isLoading = false; 
+      });
+    }
 }
 
   Future<void> fetchProduct() async {
+    setState(() {
+      isLoading = true; // Bắt đầu tải dữ liệu
+    });
     try {
       final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Products/${widget.id}'));
 
@@ -68,6 +79,10 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
       }
     } catch (e) {
       print('Error fetching product: $e');
+    }finally {
+      setState(() {
+        isLoading = false; 
+      });
     }
   }
 
@@ -121,7 +136,9 @@ class _ProductUpdatePageState extends State<ProductUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading
+      ? const Center(child: CircularProgressIndicator())
+      : Scaffold(
       backgroundColor: Color.fromARGB(255, 243, 243, 243),
       appBar: AppBar(
         title: Text("Update Product",style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold)),

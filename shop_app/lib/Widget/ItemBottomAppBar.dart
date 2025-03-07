@@ -34,26 +34,33 @@ class _ItemBottomNavBarState extends State<ItemBottomNavBar> {
                         '${widget.product?['price']} VND',
                         style: TextStyle(
                           color: Color(0xFF4C53A5),
-                          fontSize: 25,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                        Container(
-                          height: 50,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF4C53A5),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Add to cart",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        InkWell(
+                          onTap: (){},
+                          child: Container(
+                            height: 50,
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF4C53A5),
+                              borderRadius: BorderRadius.circular(20),
                             ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Thêm vào ",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(Icons.add_shopping_cart, color: Colors.white,)
+                                ],
+                              ),
                           ),
                         ),
                     ],

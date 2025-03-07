@@ -6,14 +6,14 @@ import 'package:shop_app/Page/AddProduct.dart';
 import 'package:shop_app/Page/EditProduct.dart';
 import 'package:shop_app/Widget/Alter.dart';
 import '../AppConfig.dart';
-class ProductManager extends StatefulWidget {
-  const ProductManager({super.key});
+class CategoryManager extends StatefulWidget {
+  const CategoryManager({super.key});
 
   @override
-  _ProductManagerState createState() => _ProductManagerState();
+  _CategoryManagerState createState() => _CategoryManagerState();
 }
 
-class _ProductManagerState extends State<ProductManager> {
+class _CategoryManagerState extends State<CategoryManager> {
   List<dynamic> products = []; 
   List<dynamic> categories = []; 
   bool isLoading = false;
@@ -67,9 +67,9 @@ class _ProductManagerState extends State<ProductManager> {
     }
   }
 
-   Future<void> deleteProduct(int id) async {
+   Future<void> deleteCategory(int id) async {
     try {
-      final response = await http.delete(Uri.parse('${ApiConfig.baseUrl}/api/Products/$id')); 
+      final response = await http.delete(Uri.parse('${ApiConfig.baseUrl}/api/Categorys/$id')); 
       if (response.statusCode == 204) {
         showDialog(
         context: context,
@@ -77,23 +77,24 @@ class _ProductManagerState extends State<ProductManager> {
           return Alter(message: 'Cập nhật sản phẩm thành công!');
         },
       ).then((_) {
-        fetchProducts();
+        fetchCategories();
       });
       } else {
-        print('Failed to delete products: ${response.statusCode}');
+        print('Failed to delete Categorys: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching products: $e');
+      print('Error fetching Categorys: $e');
     }
   }
-  String getCategoryName(int categoryId) {
-    final category = categories.firstWhere(
-      (category) => category['id'] == categoryId,
-      orElse: () => null,
-    );
-    return category != null ? category['name'] : 'Unknown Category';
-  }
-  void _showProductDetailDialog(BuildContext context, dynamic product) {
+  // String getCategoryName(int categoryId) {
+  //   final category = categories.firstWhere(
+  //     (category) => category['id'] == categoryId,
+  //     orElse: () => null,
+  //   );
+  //   return category != null ? category['name'] : 'Unknown Category';
+  // }
+  
+  void _showProductDetailDialog(BuildContext context, dynamic category) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -110,7 +111,7 @@ class _ProductManagerState extends State<ProductManager> {
                 children: [
                   // Name
                   Text(
-                    "${product['name']}",
+                    "${category['name']}",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -123,9 +124,9 @@ class _ProductManagerState extends State<ProductManager> {
                     width: double.infinity,
                     child: Padding(
                       padding: EdgeInsets.all(16),
-                      child: product['image'] != null
+                      child: category['image'] != null
                           ? Image.memory(
-                              base64Decode(product['image']),
+                              base64Decode(category['image']),
                               height: 200,
                             )
                           : Container(
@@ -135,40 +136,6 @@ class _ProductManagerState extends State<ProductManager> {
                             ),
                     ),
                   ),
-                  SizedBox(height: 8),
-                   Text(
-                    "Category: ${getCategoryName(product['categoryId'])}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  // Price
-                   SizedBox(height: 8),
-                  Text(
-                    "Price: ${product['price']} VND",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                     Text(
-                        'Promotion: ${product['promo']}%',
-                        style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 104, 176, 239)),
-                      ),
-                  SizedBox(height: 8),
-                  // Rate
-                  // Sold
-                  Text(
-                    "Sold: ${product['sold']}",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-               
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -178,7 +145,7 @@ class _ProductManagerState extends State<ProductManager> {
                       ),
                       Expanded( 
                         child: Text(
-                          product['description'],
+                          category['description'],
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis, // Thêm dấu "..." nếu nội dung vượt quá maxLines
                           style: TextStyle(
@@ -237,15 +204,15 @@ class _ProductManagerState extends State<ProductManager> {
         appBar: AppBar(
           backgroundColor: Colors.white,
         title: Text(
-          "Product Manager",
+          "Cateogries Manager",
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Color(0xFF4C53A5)),
         ),
       ),
        body:ListView.builder(
-              itemCount: products.length,
+              itemCount: categories.length,
               itemBuilder: (context, index) {
-                final product = products[index];
-                Uint8List bytesImage = const Base64Decoder().convert(product['image']);
+                final category = categories[index];
+                Uint8List bytesImage = const Base64Decoder().convert(category['image']);
 
                 return Container(
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -284,7 +251,7 @@ class _ProductManagerState extends State<ProductManager> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product['name'],
+                              category['name'],
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -293,8 +260,8 @@ class _ProductManagerState extends State<ProductManager> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              '${product['price']} VND',
-                              style: TextStyle(fontSize: 16, color: Color(0xFF4C53A5)),
+                              '${category['description']}',
+                              style: TextStyle(fontSize: 15, color: Color(0xFF4C53A5)),
                             ),
                             SizedBox(height: 4),
                             
@@ -305,7 +272,7 @@ class _ProductManagerState extends State<ProductManager> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              _showProductDetailDialog(context, product);
+                              _showProductDetailDialog(context, category);
                             },
                             icon: Icon(Icons.remove_red_eye),
                             color: Color.fromARGB(255, 68, 128, 202),
@@ -315,7 +282,7 @@ class _ProductManagerState extends State<ProductManager> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ProductUpdatePage(id: product['id']), // Truyền id vào ProductUpdatePage
+                                    builder: (context) => ProductUpdatePage(id: category['id']), // Truyền id vào ProductUpdatePage
                                   ),
                                 );
                              },
@@ -327,9 +294,9 @@ class _ProductManagerState extends State<ProductManager> {
                               showConfirmDialog(
                                 context: context,
                                 title: "Xác nhận",
-                                content: "Bạn có chắc muốn xóa sản phẩm này không?",
+                                content: "Bạn có chắc muốn xóa danh mục này không?",
                                 onConfirm: () {
-                                  deleteProduct(product['id']);
+                                  deleteCategory(category['id']);
                                 },
                               );
                             },

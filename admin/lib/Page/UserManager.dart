@@ -12,10 +12,12 @@ class UserManager extends StatefulWidget {
 
 class _UserManagerState extends State<UserManager> {
   List<dynamic> users = [];
+  List<dynamic> roles = [];
  @override
   void initState() {
     super.initState();
     fetchUsers();
+    fetchRoles();
   }
   Future<void> fetchUsers() async {
     try {
@@ -31,13 +33,37 @@ class _UserManagerState extends State<UserManager> {
       print('Error fetching categories: $e');
     }
   }
+  Future<void> fetchRoles() async {
+    try {
+      final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Roles'));
+      if (response.statusCode == 200) {
+        setState(() {
+          roles = jsonDecode(response.body);
+        });
+      } else {
+        print('Failed to load categories: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+  String getRole (int? roleId) {
+    if (roleId == null || roles.isEmpty) {
+    return "";
+    }
+   
+      final role = roles.firstWhere((role) => role['id'] == roleId);
+      return role?['name'] ?? "";
+    
+  }
   void _showUserDetails(Map<String, dynamic> user) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           title: Text(
-            "User Details",
+            "Chi tiết người dùng",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -51,13 +77,24 @@ class _UserManagerState extends State<UserManager> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Name: ${user['name']}", style: TextStyle(fontSize: 18)),
+             
+              Text("Tên: ${user['name']}", style: TextStyle(fontSize: 18)),
               SizedBox(height: 8),
-              Text("Address: ${user['address']}", style: TextStyle(fontSize: 18)),
+               Text("${getRole(user['role'])}", 
+                style: TextStyle(
+                  fontSize: 18,
+                  color: user['role'] == 2
+                        ? Colors.green
+                        : const Color.fromARGB(255, 95, 165, 195)
+                )
+              ),
               SizedBox(height: 8),
-              Text("Phone: ${user['phone']}", style: TextStyle(fontSize: 18)),
+              Text("Địa chỉ: ${user['address']}", style: TextStyle(fontSize: 18)),
               SizedBox(height: 8),
-              Text("Role: ${user['role']}", style: TextStyle(fontSize: 18)),
+              Text("Số điện thoại: ${user['phone']}", style: TextStyle(fontSize: 18)),
+              SizedBox(height: 8),
+              Text("Đã chi: ${user['totalBuy']} VNĐ", style: TextStyle(fontSize: 18)),
+              
             ],
           ),
           actions: [
@@ -77,12 +114,13 @@ class _UserManagerState extends State<UserManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor:Colors.white,
         title: Text(
           "User Manager",
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color:  Color(0xFF4C53A5),
           ),
         ),
       ),
@@ -112,30 +150,33 @@ class _UserManagerState extends State<UserManager> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50)
+                              borderRadius: BorderRadius.circular(100)
                             ),
-                      child: user?['image'] != null
+                        child: user?['image'] != null
                             ? Image.memory(
                                 base64Decode(user['image']),
                                 height: 40,
                             )
                           : Container(
-                              height: 40,
-                              color: Colors.grey[200],
-                              child: Icon(Icons.image, color: Colors.grey),
+                              child: Icon(Icons.account_circle_rounded, size: 35,),
                             ),
                     ),
                   
-                    SizedBox(width: 16),
+                    SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          user['name'],
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blueAccent,
+                        SizedBox(
+                          width: 160,
+                          child: Text(
+                            user['name'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
                           ),
                         ),
                         Text(user['phone'], style: TextStyle(fontSize: 15)),
@@ -149,16 +190,18 @@ class _UserManagerState extends State<UserManager> {
                       width: 120,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: user['role'] == 'Admin'
+                          color: user['role'] == 2
                               ? Colors.green
-                                  : const Color.fromARGB(255, 95, 165, 195),
+                              : const Color.fromARGB(255, 95, 165, 195),
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        ' ${ user['role']}',
+                        getRole(user['role']),
                         textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 16,
                             color: const Color.fromARGB(255, 47, 47, 47)),

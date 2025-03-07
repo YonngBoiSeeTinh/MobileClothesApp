@@ -17,6 +17,7 @@ class _OrderManagerState extends State<OrderManager> {
     List<dynamic> orders = []; // Danh sách sản phẩm
     List<dynamic> orderDetails = []; 
     List<dynamic> products = []; 
+    bool isLoading = false;
     @override
     void initState() {
       super.initState();
@@ -25,6 +26,9 @@ class _OrderManagerState extends State<OrderManager> {
       fetchProducts();
     }
    Future<void> fetchOrder() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Orders'));
       if (response.statusCode == 200) {
@@ -37,8 +41,16 @@ class _OrderManagerState extends State<OrderManager> {
     } catch (e) {
       print('Error fetching categories: $e');
     }
+    finally {
+      setState(() {
+        isLoading = false; 
+      });
+    }
   }
    Future<void> fetchOrderDetails() async {
+    setState(() {
+      isLoading = true;
+    });
       try {
         final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/OrderDetails'));
         if (response.statusCode == 200) {
@@ -50,9 +62,16 @@ class _OrderManagerState extends State<OrderManager> {
         }
       } catch (e) {
         print('Error fetching categories: $e');
-      }
+      }finally {
+      setState(() {
+        isLoading = false; 
+      });
+    }
     }
    Future<void> fetchProducts() async {
+    setState(() {
+      isLoading = true;
+    });
     try {
       final response = await http.get(Uri.parse('${ApiConfig.baseUrl}/api/Products'));
       if (response.statusCode == 200) {
@@ -65,6 +84,9 @@ class _OrderManagerState extends State<OrderManager> {
     } catch (e) {
       print('Error fetching categories: $e');
     }
+       setState(() {
+      isLoading = true;
+    });
   }
   
 
@@ -100,7 +122,9 @@ class _OrderManagerState extends State<OrderManager> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading
+    ? const Center(child: CircularProgressIndicator())
+    :  Scaffold(
       appBar: AppBar(
         title: Text(
           "Order Manager",
@@ -111,7 +135,9 @@ class _OrderManagerState extends State<OrderManager> {
           ),
         ),
       ),
-      body: ListView.builder(
+      body:  orders.length <= 0 ?
+      const Center(child: Text("Không có đơn hàng nào"))
+      :ListView.builder(
         itemCount: orders.length,
         itemBuilder: (context, index) {
           final order = orders[index];

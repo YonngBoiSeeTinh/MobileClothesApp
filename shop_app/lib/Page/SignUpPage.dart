@@ -53,7 +53,7 @@ Widget _backButton() {
             ],
             color: Colors.white),
         child: Text(
-          'Signup',
+          'Đăng ký',
           style: TextStyle(fontSize: 20, color:  Color(0xFF4C53A5)),
         ),
       ),
@@ -121,17 +121,17 @@ Widget _backButton() {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              'Bạn đã có tài khoản ?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Login',
+              'Đăng nhập',
               style: TextStyle(
                   color: Color(0xfff79c4f),
-                  fontSize: 13,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
           ],

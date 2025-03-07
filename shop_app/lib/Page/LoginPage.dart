@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_app/Page/SignUpPage.dart';
+import 'package:shop_app/UserProvider.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -34,9 +36,28 @@ class _LoginPageState extends State<LoginPage> {
   }
   Widget _submitButton() {
     return InkWell(
-      onTap: () {
-        print('Email: ${_emailController.text}');
-        print('Password: ${_passwordController.text}');
+      onTap: () async  {
+        final email = _emailController.text.trim();
+        final password = _passwordController.text.trim();
+       
+       if (email.isEmpty || password.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Email và mật khẩu không được để trống!')),
+        );
+        return;
+      }
+       final userProvider = Provider.of<UserProvider>(context, listen: false);
+        bool success = await userProvider.login(email, password);
+        if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Đăng nhập thành công!')),
+        );
+        Navigator.pushReplacementNamed(context, '/'); 
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Đăng nhập thất bại. Vui lòng kiểm tra lại!')),
+        );
+      }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -53,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             ],
             color: Colors.white),
         child: Text(
-          'Login',
+          'Đăng nhập',
           style: TextStyle(fontSize: 20, color:  Color(0xFF4C53A5)),
         ),
       ),
@@ -125,17 +146,17 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Don\'t have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              'Bạn chưa có tài khoản?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Register',
+              'Đăng ký ngay',
               style: TextStyle(
                   color: Color(0xfff79c4f),
-                  fontSize: 13,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600),
             ),
           ],
@@ -174,8 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         height: 80,
                       ),
-                      _entryField("Email id",_emailController),
-                      _entryField("Password", isPassword: true,_passwordController),
+                      _entryField("Email ",_emailController),
+                      _entryField("Mật khẩu", isPassword: true,_passwordController),
                       SizedBox(height: 20),
                       _submitButton(),
                       SizedBox(  height: 20,   ),

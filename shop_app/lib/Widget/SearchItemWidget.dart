@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/AppConfig.dart';
@@ -59,6 +61,8 @@ class _ItemWidgetState extends State<SearchItemWidget> {
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(
                 padding: const EdgeInsets.all(10),
+                shrinkWrap: true, // Tránh cuộn riêng
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
@@ -77,11 +81,11 @@ class _ItemWidgetState extends State<SearchItemWidget> {
 
 class ProductCard extends StatelessWidget {
   final dynamic product;
-
   const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
+    Uint8List bytesImage = const Base64Decoder().convert(product['image']);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       decoration: BoxDecoration(
@@ -100,7 +104,7 @@ class ProductCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              if (product['discount'] != null)
+              if (product['promo'] != 0)
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
@@ -109,7 +113,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(1000),
                   ),
                   child: Text(
-                    "${product['discount']}%",
+                    "${product['promo']}%",
                     style: const TextStyle(
                       fontSize: 14,
                       color: Colors.white,
@@ -129,17 +133,17 @@ class ProductCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductDetailPage(product: product,), // Truyền id vào ProductUpdatePage
+                  builder: (context) => ProductDetailPage(product: product,), 
                 ),
               );
             },
             child: Container(
               margin: const EdgeInsets.only(bottom: 5),
-              child: Image.memory(
-               base64Decode(product['image']),
+              child: !bytesImage.isEmpty ? Image.memory(
+                bytesImage,
                 height: 120,
                 width: 120,
-              ),
+              ) : Text('Không có hình ảnh'), 
             ),
           ),
           Container(
@@ -153,28 +157,40 @@ class ProductCard extends StatelessWidget {
               ),
             ),
           ),
+         product['promo'] > 0 ?
           Row(
             children: [
-              Row(
-                children: List.generate(
-                  5,
-                  (index) => Icon(
-                    Icons.star,
-                    color: index < (product['rating'] ?? 0)
-                        ? Colors.amber
-                        : Colors.grey,
-                    size: 18,
-                  ),
+             Padding(
+                padding: const EdgeInsets.only(top :2),
+                child: Text(
+                "${product['price'] ?? 0} VNĐ",
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Color.fromARGB(255, 134, 135, 137),
+                  decoration: TextDecoration.lineThrough,
                 ),
+                                        ),
               ),
               const Spacer(),
               Text(
-                "${product['reviews'] ?? 0} reviews",
+                "${product['sold'] ?? 0} luợt mua",
                 style: const TextStyle(
                   fontSize: 14,
                   color: Color.fromARGB(255, 76, 78, 95),
                 ),
               ),
+            ],
+          )
+          : Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [  
+              Text(
+                    "${product['sold'] ?? 0} luợt mua",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(255, 76, 78, 95),
+                    ),
+                  ),
             ],
           ),
           Padding(
@@ -182,13 +198,22 @@ class ProductCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "${product['price'] ?? 0} VNĐ",
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Color.fromARGB(255, 68, 72, 109),
-                  ),
-                ),
+                    product['promo'] > 0  ?
+                        Text(
+                          "${product['price'] -  product['promo']*0.01 * product['price'] ?? 0} VNĐ",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 68, 72, 109),
+                          ),
+                        )
+                     : 
+                     Text(
+                      "${product['price'] ?? 0} VNĐ",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 68, 72, 109),
+                      ),
+                    ),
                 const Icon(
                   Icons.shopping_cart_checkout_rounded,
                   color: Color.fromARGB(255, 68, 72, 109),

@@ -23,7 +23,7 @@ class Cartitemwidget extends StatelessWidget {
             height: 70,
             width: 70,
             margin: EdgeInsets.only(right: 15),
-            child: Image.asset("image/1.png"),
+            child: Image.asset("image/2.png"),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),

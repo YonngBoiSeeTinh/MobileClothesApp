@@ -19,7 +19,7 @@ builder.Services.AddDbContext<CSDLBanHang>(otp => otp.UseSqlServer(cf.GetConnect
 
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.MultipartBodyLengthLimit = 20 * 1024 * 1024; // Cho phép file tối đa 10MB
+    options.MultipartBodyLengthLimit = 20 * 1024 * 1024; 
 });
 
 
@@ -53,6 +53,7 @@ app.UseCors(builder => builder
    .AllowAnyMethod()
    .AllowAnyHeader());
 
+app.Urls.Add("https://0.0.0.0:7192");
 app.MapControllers();
 
 app.Run();

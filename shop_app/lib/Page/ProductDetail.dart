@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:clippy_flutter/arc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_app/AppConfig.dart';
 import 'package:shop_app/Widget/ItemAppBarWidget.dart';
 import 'package:shop_app/Widget/ItemBottomAppBar.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetailPage extends StatefulWidget {
   Map<String, dynamic>? product;
@@ -14,7 +16,28 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
 
-  
+  int quantity = 1 ;
+
+  void changeQuantity( String action){
+   setState(() {
+      if (action == "add") {
+        quantity++;
+      } else if (action == "minus" && quantity > 1) {
+        quantity--;
+      }
+    });
+  }
+
+  void addToCart() {
+    http.post(
+      Uri.parse('${ApiConfig.baseUrl}/api/Carts'),
+      body: jsonEncode({
+        'productId': widget.product?['id'],
+        'quantity': quantity,
+      }),
+    );
+  }
+
    
   @override
   Widget build(BuildContext context) {
@@ -66,6 +89,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ),
        
         _buildRatingAndQuantity(),
+        SizedBox(height: 8,),
          _buildColorSizeOptions(),
         _buildDescription(),
       
@@ -94,11 +118,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               padding: const EdgeInsets.only(right: 20.0),
               child: Row(
               children: [
-                _buildQuantityButton(CupertinoIcons.plus),
+                _buildQuantityButton(CupertinoIcons.minus, "minus"),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    "01",
+                    quantity.toString(),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -106,7 +130,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                 ),
-                _buildQuantityButton(CupertinoIcons.minus),
+                _buildQuantityButton(CupertinoIcons.plus, "add"),
               ],
                         ),
             ),
@@ -115,23 +139,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _buildQuantityButton(IconData icon) {
-    return Container(
-      padding: EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blueGrey,
-            spreadRadius: 1,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Icon(
-        icon,
-        size: 20,
+  Widget _buildQuantityButton(IconData icon, String action) {
+    return InkWell(
+      onTap: (){
+        changeQuantity(action);
+      },
+      child: Container(
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blueGrey,
+              spreadRadius: 1,
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Icon(
+          icon,
+          size: 20,
+        ),
       ),
     );
   }
